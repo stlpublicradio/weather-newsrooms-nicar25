@@ -5,7 +5,7 @@ import jsonminify from "jsonminify";
 import { WebClient } from "@slack/web-api";
 const SLACK_TOKEN = process.env.SLACK_TOKEN;
 const client = new WebClient(SLACK_TOKEN);
-const SLACK_CHANNEL = "C17MR46KU"; // Put your channel ID here
+const SLACK_CHANNEL = process.env.SLACK_CHANNEL;
 const three_ticks = "```";
 
 // utility functions
