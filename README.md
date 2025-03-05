@@ -1,70 +1,28 @@
 # weather-newsrooms
 
-Updated for ONA 2024 in Atlanta ... Using Data to Help Tell Weather Stories
+Updated for NICAR 20245 in Minneapolis ... Watching the Weather With Github Actions
 
 Join me ...
 
 - Sign into Github (or quickly make an account if you haven't already): [github.com](https://github.com)
 - Go to my Github page **[github.com/jkeefe/](https://github.com/jkeefe)**
-- Click on the pinned repository at the top: [weather-newsrooms-ona24](https://github.com/jkeefe/weather-newsrooms-ona24)
+- Click on the pinned repository at the top: [weather-newsrooms-nicar25](https://github.com/jkeefe/weather-newsrooms-nicar25)
 
-## What's ahead?
+### Today's Plan
 
-- [Heat Risk](https://www.wpc.ncep.noaa.gov/heatrisk/)
-- [Excessive Rain](https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php)
-- [Winter Storm Severity Index](https://www.wpc.ncep.noaa.gov/wwd/wssi/wssi.php)
-- [Severe storm risks](https://www.spc.noaa.gov/products/outlook/)
-- [Records](https://www.wpc.ncep.noaa.gov/exper/ndfd/ndfd.html)
-- The forecast for [free](https://weather.gov)!
-- [Your Places: Extreme Weather](https://www.nytimes.com/interactive/2023/us/extreme-weather-forecast-maps.html)
+We'll make a bot that watches for warnings and Slacks them to you
 
-## What happened?
+In the process, you will ...
 
-### Yesterday
+- Learn about the Weather Service API
+- Make your own copy of my code to take home
+- Learn about Github Actions
+- Learn about Github Codespaces
+- Learn about sending data to Slack
 
-- Weather forecast office = WFO
-- Google "Atlanta WFO"
-- Click on "Cllimate and Past Weather"
-- Click on "Observed Weather"
-- "Daily Climate Report"
+### The bot we will build
 
-### Earlier this month
-
-- NOW Data tab
-- "Daily Data for a month"
-
-### In the historical record
-
-**Method 1: NECI climate data**
-
-- Go to https://www.ncei.noaa.gov/access/search/data-search/daily-summaries (or [bit.ly/weather-records-1](https://bit.ly/weather-records-1))
-- Type in Atlanta
-- Choose "Preview" on the Atlanta Hartsfield Airport line
-- Pick a year month
-- View the PDF
-- Now download all the data
-- But what are these columns?
-- See the descriptions here: https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html
-
-**Method 2: Thredex data**
-
-- Go to https://builder.rcc-acis.org/ (or [bit.ly/weather-records-2](https://bit.ly/weather-records-2))
-- Enter ATL
-- por (period of record)
-- por
-- mint (minimum temperature)
-- can convert to csv: https://www.convertcsv.com/json-to-csv.htm
-- can throw into datawrapper
-- Can see trends!
-
-**Record highs and lows**
-
-- Same as the Method 2 above, but ethe lements are:
-- Record lows: `[{"name":"mint","interval":[0,0,1],"duration":1,"smry":{"add":"date","reduce":"min"},"smry_only":"1","groupby":"year"}]`
-- Record highs: `[{"name":"maxt","interval":[0,0,1],"duration":1,"smry":{"add":"date","reduce":"max"},"smry_only":"1","groupby":"year"}]`
-- Documentation: https://www.rcc-acis.org/docs_webservices.html#title8
-
-## What's happening _right now?_
+- Quick demo:
 
 ### The Weather Service API
 
@@ -73,17 +31,16 @@ Join me ...
 - Building a URL:
   - Base endpoint: `https://api.weather.gov/alerts/active`
   - We want actual warnings, not tests: `?status=actual`
-  - Area? Let's say Georgia. You can get fancier here, but states are easy: `&area=GA`
-  - Code. This is the warning type. Tornado warning, tornado watch, etc. List is [here](https://www.weather.gov/nwr/eventcodes). Could do `&code=TOR`, but let's just leave this off.
-- But what about monitoring it?
+  - Area: Let's say Minnesota. You can get fancier here, but states are easy: `&area=MN`
+  - There's also a "code" option. This is the warning type. Tornado warning, tornado watch, etc. List is [here](https://www.weather.gov/nwr/eventcodes). You could add`&code=TOR`, but let's just leave this off today.
 
 ### Let's play with some code!
 
 1. Sign into Github (or quickly make an account if you haven't already): [github.com](https://github.com)
 1. Return to this page or scroll to the top of this page!
 1. Chose the "Fork" button
-1. Note that the **owner** is now **you**. Click "Create fork"
-1. After a minute, you will have a new screen. Note that your name is up at the top! This is your copy. You can use this now or just watch and return to it later. (If you see **jkeefe** instead of your name, you're on the wrong screen. Go find your copy in your github account.)
+1. Make sure that the **owner** is now **you**. Click "Create fork"
+1. After a minute, you will have a new screen. Note that your name is up at the top! This is your copy. You should use this now. (If you see **jkeefe** instead of your name, you're on the wrong screen. Go find your copy in your github account.)
 1. Now click the green "<> Code" button and, after you do, the "Codespaces" tab under it.
 1. Click "Create Codespace on Main"
 
