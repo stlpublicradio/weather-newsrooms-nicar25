@@ -97,23 +97,25 @@ Imagine if we could run this command every few minutes. That'd be pretty useful!
 
 Github actions allow you to run your code in the cloud.
 
-The driver of any github action is a yaml file in the `.github/workflows` directory of a repo, [like this one](.github/workflows/warnings.yml).
+The driver of any github action is a yaml file in the `.github/workflows` directory of a repository, [like this one](.github/workflows/warnings.yml).
 
 In short, here's what our `warnings` Github Action does:
 
 - It starts running according to a cron statement (here every 10 minutes)
 - Spins up a **computer running ubuntu**
-- **Checks out** this repo
+- **Checks out** this repository
 - **Loads node.js** and installs packages (or it pulls them from a cache if nothing has changed).
-- Reads a secret called SLACK_TOKEN
+- Reads secrets called SLACK_TOKEN and SLACK_CHANNEL ... which we'll set up in a few
 - Runs **make all** just like we did in the terminal
-- **Commits** the new data to the repo (saving our `seen.json` for the next run)
+- **Commits** the new data and pushes it to the repository (saving our `seen.json` for the next run)
 
 To get this working, you need to do a few key things:
 
-**Edit your Makefile**
+### Change the script we're using
 
-In line 4 of your Makefile, where you see `all:` we need to replace `warnings` with `slack`
+We need to use `warnings-slack.js` for our operation instead of `warnings.js`. You can do this by using a different make command.
+
+In line 4 of your Makefile, where you see `all:`, replace `warnings` with `slack`
 
 It should look like this when you are done:
 
@@ -121,18 +123,7 @@ It should look like this when you are done:
 all: clean download slack
 ```
 
-**Let the Action write back to the repo**
-
-- Go to your code repository `your-name/weather-newsrooms-nicar25`
-- Settings > Actions > General > Workflow Permissions > Read and Write permissions > SAVE
-- Don't forget to click "Save!"
-  <img width="959" alt="Screenshot 2024-03-06 at 9 49 13 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/daa35671-8fec-4dde-a1d0-d769733097ca">
-
-<img width="868" alt="Screenshot 2024-03-06 at 10 11 08 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/64df0600-0ae7-4857-99d0-45510ee0faa4">
-
-OK, now we need to set up Slack and get some codes from there.
-
-#### Run the action every 10 minutes
+### Run the action every 10 minutes
 
 To make the bot run automatically, find the `warnings.yml` file in the `.github/workflows` folder.
 
@@ -146,6 +137,25 @@ on:
     - cron: '*/10 * * * *'   # <-- Set your cron here (UTC). Uses github which can be ~2-10 mins late.
   workflow_dispatch:
 ```
+
+### Save your work from the Codespace to the repository
+
+In the terminal window (at the bottom of the screen) ...
+
+- type `git add -A` to add your files to the set you're saving
+- type `git commit "set up for slack"` or whatever note makes sense to you for this save
+- type `git push origin main` to push up the code, saving it.
+
+### Let the Action write back to the repository
+
+- Go to your code repository `your-name/weather-newsrooms-nicar25`
+- Settings > Actions > General > Workflow Permissions > Read and write permissions > SAVE
+- Don't forget to click "Save!"
+  <img width="959" alt="Screenshot 2024-03-06 at 9 49 13 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/daa35671-8fec-4dde-a1d0-d769733097ca">
+
+<img width="868" alt="Screenshot 2024-03-06 at 10 11 08 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/64df0600-0ae7-4857-99d0-45510ee0faa4">
+
+OK, now we need to set up Slack and get some codes from there.
 
 ### Setting up Slack to receive real-time warnings
 
@@ -189,7 +199,7 @@ Head back to the Slack workspace.
 
 Head back to your Github code repository online (not your Codespace ... the actual repository page)
 
-**Let the Action know your Slack Token**
+#### Store your Slack token as a "secret"
 
 - Pick: Settings > Secrets and varialbes > Actions > Repository Secrets > New Repository Secret
 
@@ -202,13 +212,13 @@ Head back to your Github code repository online (not your Codespace ... the actu
 
 <img width="912" alt="Screenshot 2024-03-06 at 9 44 53 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/99a855c4-46d7-482e-ad55-5123920e0a0f">
 
-**Let the Action know your Slack Channel**
+#### Store your Slack channel as a "secret"
 
 - Again, you want a New Repository Secret
 - This time, enter `SLACK_CHANNEL` in the top box
 - Paste your channel ID in the bottom box.
 
-Now go back to your Codespace. You may need to restart it, since we haven't used it for a little while. Just click the restart codespace button.
+### Run your Action!
 
 Then ... run your action:
 
@@ -218,9 +228,13 @@ Then ... run your action:
 
 - Click the "warnings" label next to the yellow dot to watch it in action.
 
+## Troubleshooting
+
 ### Try in your Codespace
 
 Go back to your Codespace. You may need to restart it (reload the page and click the restart button).
+
+Your Codespace doesn't know your SLACK_TOKEN and SLACK_CHANNEL secrets, so we need to tell it.
 
 In the terminal window at the bottom, type:
 
@@ -246,15 +260,27 @@ For example:
 export SLACK_CHANNEL=C123ABC45 (no spaces)
 ```
 
-- Now type `make slack`!
+- Now type `make all`!
 
-You should see something like this appear in your Slack workspace, in the #alerts channel:
+You should see something like this appear in the #alerts channel of your Slack workspace:
 
 <img width="706" alt="Screenshot 2024-09-19 at 1 30 51 PM" src="https://github.com/user-attachments/assets/3b2d6fbc-bdc9-4867-8092-01c950e9687d">
 
 If you click on the "reply" link, you'll see that the bot has included the details as a thread!
 
 <img width="578" alt="Screenshot 2024-09-19 at 1 31 02 PM" src="https://github.com/user-attachments/assets/7548734f-5d8b-4308-b748-ba536c4555ea">
+
+## To make the codespace "forget" alerts it's seen:
+
+Go into the `data` folder and click on `seen.json`
+
+Replace the contents there with an empty array, which is just a open and closed square bracket, like this:
+
+```
+[]
+```
+
+Now try `make all` again.
 
 ## Saving your work from the Codespace
 
