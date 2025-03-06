@@ -175,8 +175,13 @@ OK, now we need to make the Slack app. Here's how:
 - Go to this [Slack app quickstart](https://api.slack.com/start/quickstart) by pasting `https://api.slack.com/start/quickstart` into the new tab
 - Do steps 1, 2 and 3
 - In step 2, "Requesting Scopes" you just need the `chat:write` scope.
-- Note that the bot will only work in channels where the bot is invited.
-- The thing you want is the "Bot User OAuth Token" which always starts `oxob-`. That's the token. Copy this into a safe place.
+- Note that the bot will only work in channels where the bot is invited (we'll do that in a moment).
+- When you are done with all of the steps, the thing you want is the "Bot User OAuth Token" which always starts `oxob-`. That's the token. Copy this into a safe place. If you ever need to get to this token again, go to:
+  - Go to https://api.slack.com/apps
+  - Sign in if you're not already signed in
+  - Click on the app name
+  - Click "Install app" on the left side of the screen
+  - Copy the "Bot User OAuth Token"
 - You can close this tab.
 
 ### Make the #alerts channel
@@ -190,7 +195,8 @@ Head back to the **Slack workspace tab**.
 - Invite the bot to the channel! For example, type: `/invite @warnings_bot` (using whatever you called your bot)
 - Next, get the channel ID, which you can find by clicking on the channel name at the very top of the screen.
 - The Channel ID is at the very bottom of the pop-up window, and you can click the little copy icon to copy it. Keep it in a safe spot.
-  <img width="624" alt="Screenshot 2024-09-19 at 1 31 24 PM" src="https://github.com/user-attachments/assets/a6fbb5c6-844d-4ff0-b3da-6cdf90a5c6c5">
+
+<img width="624" alt="Screenshot 2024-09-19 at 1 31 24 PM" src="https://github.com/user-attachments/assets/a6fbb5c6-844d-4ff0-b3da-6cdf90a5c6c5">
 
 ### Last steps back at Github
 
