@@ -34,7 +34,6 @@ jobs:
       - name: Install packages if there's no cache
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: |-
-          cd ./"$GITHUB_WORKFLOW"
           npm ci
 
       - name: Start the data processing using make
@@ -42,7 +41,6 @@ jobs:
           BOT_NAME: ${{ github.workflow }} # <-- This makes you bot name available to scripts
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
           SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
-
         uses: nick-fields/retry@v2
         with:
           max_attempts: 5
