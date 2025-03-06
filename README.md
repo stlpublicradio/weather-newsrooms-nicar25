@@ -22,11 +22,13 @@ In the process, you will ...
 - Learn about Github Codespaces
 - Set up Slack to get messages
 - Set up Github with the settings you need
-- Make it go
+- Make it go!
 
 ### Quick demo of the bot
 
-- Using my Slack account
+- Pencils down
+- Using my code and my personal Slack account
+- Run the action
 
 ### The slides: A visual guide for where everthing lives
 
@@ -40,7 +42,7 @@ In the process, you will ...
   - Base endpoint: `https://api.weather.gov/alerts/active`
   - We want actual warnings, not tests: `?status=actual`
   - Area: Let's say Minnesota. You can get fancier here, but states are easy: `&area=MN`
-  - There's also a "code" option. This is the warning type. Tornado warning, tornado watch, etc. List is [here](https://www.weather.gov/nwr/eventcodes). You could add`&code=TOR`, but let's just leave this off today.
+  - There's also a "code" option. This is the warning type. Tornado warning, tornado watch, etc. List is [here](https://www.weather.gov/nwr/eventcodes). You could add `&code=TOR` or `@code=TOR,HWW,FFW` for example.
 
 ### Make your own copy of my code
 
@@ -75,9 +77,12 @@ This is a temporary, cloud-based computer you use in your browser. You still nee
 ### Weather Warnings Code
 
 - Look at the Makefile in that folder
+- Take a peek at the `SOURCE_URL` at the top
+  - If you use this for your work, you'll want to adjust this URL's `area` and `code` values here. See "The Weather Service API" section above.
+  - You can also comment out that line, and uncomment line 2 for testing on an old alert I saved
 - Open the Terminal, if it's not open already
 - Type `make download` ... this downloads everything
-- Type `make warnings`
+- Type `make warnings` ... and see what happens!
 - `make clean` clears out what we downloaded so it's fresh
 - `make all` does three things: `make clean`, `make download` and `make warnings`
 
@@ -109,9 +114,9 @@ In short, here's what our `warnings` Github Action does:
 
 To get this working, you need to do a few key things:
 
-### Change the script we're using
+### Change which script we're using
 
-We need to use `warnings-slack.js` for our operation instead of `warnings.js`. You can do this by using a different make command.
+We need to use `warnings-slack.js` for our operation instead of `warnings.js`. It includes the code for sending Slack messages. We'll adjust our `make all` command to make this change.
 
 In line 4 of your Makefile, where you see `all:`, replace `warnings` with `slack`
 
@@ -119,21 +124,6 @@ It should look like this when you are done:
 
 ```
 all: clean download slack
-```
-
-### Run the action every 10 minutes
-
-To make the bot run automatically, find the `warnings.yml` file in the `.github/workflows` folder.
-
-Then uncomment (so remove the `#` and a single space) from lines 4 and 5. The file should now look like this at the top (the indentations matter and should be exact):
-
-```
-name: warnings
-
-on:
-  schedule:
-    - cron: '*/10 * * * *'   # <-- Set your cron here (UTC). Uses github which can be ~2-10 mins late.
-  workflow_dispatch:
 ```
 
 ### Save your work from the Codespace to the repository
@@ -144,7 +134,7 @@ In the terminal window (at the bottom of the screen) ...
 - type `git commit "set up for slack"` or whatever note makes sense to you for this save
 - type `git push origin main` to push up the code, saving it.
 
-### Let the Action write back to the repository
+### Allow the Action write back to the repository
 
 - Go to your code repository `your-name/weather-newsrooms-nicar25`
 - Settings > Actions > General > Workflow Permissions > Read and write permissions > SAVE
@@ -225,6 +215,33 @@ Then ... run your action:
   <img width="589" alt="Screenshot 2024-03-06 at 9 40 54 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/5b535489-b742-43d5-8e8f-ea57a2533ece">
 
 - Click the "warnings" label next to the yellow dot to watch it in action.
+
+Did the message appear in your Slack workspace? Did the bot throw an error?
+
+Also, if there's geodata, you'll get that, too!
+
+### Run the action every 10 minutes
+
+Once it's working, you can make the bot run automatically. Find the `warnings.yml` file in the `.github/workflows` folder.
+
+Then uncomment (so remove the `#` and a single space) from lines 4 and 5. The file should now look exactly like this at the top (the indentations matter and should be exact):
+
+```
+name: warnings
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # <-- Set your cron here (UTC). Uses github which can be ~2-10 mins late.
+  workflow_dispatch:
+```
+
+### Save those changes Codespace to the repository
+
+In the terminal window (at the bottom of the screen) ...
+
+- type `git add -A` to add your files to the set you're saving
+- type `git commit "enabled automatic actions"` or whatever note makes sense to you for this save
+- type `git push origin main` to push up the code, saving it.
 
 ## Troubleshooting
 
