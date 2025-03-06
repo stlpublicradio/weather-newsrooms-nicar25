@@ -37,16 +37,19 @@ In the process, you will ...
   - We want actual warnings, not tests: `?status=actual`
   - Area: Let's say Minnesota. You can get fancier here, but states are easy: `&area=MN`
   - There's also a "code" option. This is the warning type. Tornado warning, tornado watch, etc. List is [here](https://www.weather.gov/nwr/eventcodes). You could add `&code=TOR` or `@code=TOR,HWW,FFW` for example.
+  - Let's leave this tab open
 
 ### Make your own copy of my code
+
+In a new browser tab ...
 
 1. Sign into Github (or quickly make an account if you haven't already): [github.com](https://github.com)
 1. Return to this page or scroll to the top of this page!
 1. Chose the "Fork" button
 1. Make sure that the **owner** is now **you**. Click "Create fork"
 1. After a minute, you will have a new screen. Note that your name is up at the top! This is your copy. You should use this now. (If you see **jkeefe** instead of your name, you're on the wrong screen. Go find your copy in your github account.)
-
-Quick note: Your repository is where the Github Action lives, which is the operational part of the bot. We'll come back to it later, but just wanted to point this out.
+1. Keep this tab open. We'll call it the **repository tab**.
+1. If the `jkeefe` repository is open oinn another tab, close it to avoid confusion.
 
 ### Using Codespaces
 
@@ -60,6 +63,7 @@ This is a temporary, cloud-based computer you use in your browser. You still nee
 1. Now click the green "<> Code" button and, after you do, the "Codespaces" tab under it.
 1. Click "Create Codespace on Main"
 1. Wait a minute.
+1. We'll be coming back to this tab a lot, and I'll call it the **Codespaces tab**.
 
 ### Let's take a look around!
 
@@ -94,7 +98,11 @@ Imagine if we could run this command every few minutes. That'd be pretty useful!
 
 Github actions allow you to run your code in the cloud.
 
-The driver of any github action is a yaml file in the `.github/workflows` directory of a repository, [like this one](.github/workflows/warnings.yml).
+_NOTE! This is a **different** computer in the cloud than your Codespace. Technically it's called a "runner" and only exists as long as it takes to run your code._
+
+The driver of any github action is a yaml file in the `.github/workflows` directory of a repository, [like this one](.github/workflows/warnings.yml). Let's take a look.
+
+In your **Codespaces tab**, open the warnings.yml file in the `.github/workflows` directory.
 
 In short, here's what our `warnings` Github Action does:
 
@@ -108,11 +116,14 @@ In short, here's what our `warnings` Github Action does:
 
 To get this working, you need to do a few key things:
 
-### Change which script we're using
+### Change the warnings script we're using
 
-We need to use `warnings-slack.js` for our operation instead of `warnings.js`. It includes the code for sending Slack messages. We'll adjust our `make all` command to make this change.
+We need to use a slightly more sophisticated warnings script called `warnings-slack.js` instead of `warnings.js`. The new one includes code for sending Slack messages.
 
-In line 4 of your Makefile, where you see `all:`, replace `warnings` with `slack`
+We'll adjust our `make all` command to make this change.
+
+- Be sure you're in your **Codespaces tab**.
+- On line 4 of your Makefile, where you see `all:`, replace `warnings` with `slack`
 
 It should look like this when you are done:
 
@@ -122,7 +133,7 @@ all: clean download slack
 
 ### Save your work from the Codespace to the repository
 
-In the terminal window (at the bottom of the screen) ...
+In the terminal window (at the bottom of the **Codespaces tab**) ...
 
 - type `git add -A` to add your files to the set you're saving
 - type `git commit "set up for slack"` or whatever note makes sense to you for this save
@@ -130,8 +141,8 @@ In the terminal window (at the bottom of the screen) ...
 
 ### Allow the Action write back to the repository
 
-- Go to your code repository `your-name/weather-newsrooms-nicar25`
-- Settings > Actions > General > Workflow Permissions > Read and write permissions > SAVE
+- Switch to your **repository tab**, the one with `your-name/weather-newsrooms-nicar25` at the top.
+- Click through: Settings > Actions > General > Workflow Permissions > Read and write permissions > SAVE
 - Don't forget to click "Save!"
   <img width="959" alt="Screenshot 2024-03-06 at 9 49 13 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/daa35671-8fec-4dde-a1d0-d769733097ca">
 
@@ -149,24 +160,28 @@ The only catch is that depending on your existing Slack setup, you may need to g
 
 Even if they are not, the good thing is that you this will work in a _free Slack workspace_. So even if you don't have full access to your organization's Slack system, you can do this all on your own if you want. Let's do that for fun:
 
+- Open a new browser tab.
 - Go to [slack.com](https://slack.com)
 - Chose "Create a new workspace"
 - Enter your email
 - You'll need to verify your email with a one-time code
 - Answer the questions
 - Use the "free" option (not "pro")
+- Leave this tab open. I'll call this the **Slack workspace tab**.
 
 OK, now we need to make the Slack app. Here's how:
 
-- Go to this [Slack app quickstart](https://api.slack.com/start/quickstart)
+- Open _yet another tab_
+- Go to this [Slack app quickstart](https://api.slack.com/start/quickstart) by pasting `https://api.slack.com/start/quickstart` into the new tab
 - Do steps 1, 2 and 3
 - In step 2, "Requesting Scopes" you just need the `chat:write` scope.
 - Note that the bot will only work in channels where the bot is invited.
 - The thing you want is the "Bot User OAuth Token" which always starts `oxob-`. That's the token. Copy this into a safe place.
+- You can close this tab.
 
 ### Make the #alerts channel
 
-Head back to the Slack workspace.
+Head back to the **Slack workspace tab**.
 
 - In the lefthand column, find and click "Add channels"
 - "Create a new channel"
@@ -179,9 +194,11 @@ Head back to the Slack workspace.
 
 ### Last steps back at Github
 
-Head back to your Github code repository online (not your Codespace ... the actual repository page)
+Head back to your Github **repository tab** (not your Codespace)
 
 #### Store your Slack token as a "secret"
+
+We need to let your Github Action know the secret codes to talk to Slack. Github provides a secure vault where you can store these values safely, making them only available to your Actions. Note that for security reasons, you will _not_ be able to see these codes again once you save them here. So be sure they are safely somewhere else. (I keep them in my password manager.)
 
 - Pick: Settings > Secrets and varialbes > Actions > Repository Secrets > New Repository Secret
 
@@ -208,11 +225,14 @@ Then ... run your action:
   <img width="445" alt="Screenshot 2024-03-06 at 9 40 45 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/6db8365f-30be-4a49-9c31-5b3fa28e2068">
   <img width="589" alt="Screenshot 2024-03-06 at 9 40 54 PM" src="https://github.com/jkeefe/nicar2024-weather/assets/312347/5b535489-b742-43d5-8e8f-ea57a2533ece">
 
-- Click the "warnings" label next to the yellow dot to watch it in action.
+- It'll take a few seconds to start.
+- Click the "warnings" label next to the yellow dot to watch it work.
 
 Did the message appear in your Slack workspace? Did the bot throw an error?
 
-Also, if there's geodata, you'll get that, too!
+If things aren't working, raise your hand. Also you can explore the "Troubleshooting" section below.
+
+Note that if the warning has geodata, you'll get that, too!
 
 ### Run the action every 10 minutes
 
