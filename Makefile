@@ -3,9 +3,6 @@ SOURCE_URL:="https://api.weather.gov/alerts/active?status=actual&area=MN"
 
 all: clean download warnings
 
-clean:
-	-rm ./tmp/download.json
-
 download:
 	-mkdir tmp
 	wget --continue --progress=dot:mega --waitretry=60 ${SOURCE_URL} \
@@ -18,3 +15,6 @@ warnings:
 
 slack:
 	node warnings-slack.js
+
+clean:
+	-rm ./tmp/download.json

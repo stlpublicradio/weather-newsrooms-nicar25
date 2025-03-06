@@ -1,6 +1,6 @@
-# weather-newsrooms
+# Watching the Weather With Github Actions
 
-Updated for NICAR 20245 in Minneapolis ... Watching the Weather With Github Actions
+Updated for NICAR 20245 in Minneapolis ...
 
 Join me ...
 
@@ -20,17 +20,19 @@ In the process, you will ...
 - Make your own copy of my code to take home
 - Learn about Github Actions
 - Learn about Github Codespaces
-- Learn about sending data to Slack
+- Set up Slack to get messages
+- Set up Github with the settings you need
+- Make it go
 
 ### Quick demo of the bot
 
 - Using my Slack account
 
-### A visual guide of where everthing lives
+### A visual guide for where everthing lives
 
 - Here's my code
+- Go to Actions
 - Weather Service API <> Github actions > Slack
--
 
 ### The Weather Service API
 
@@ -56,11 +58,11 @@ Quick note: Your repository is where the Github Action lives, which is the opera
 
 Normally, when you use Github you _clone_ the code down onto your own computer. Then you type aned code locally. When you're done, you _push_ it back up to Github.
 
-But in this class, we're going to do something different: Code on a computer in the cloud, that's already set up with an environment that works for the code I'm showing you.
+But in this class, we're going to do something different: Code on a computer in the cloud — a computer that's already set up with an environment that works for the code I'm showing you.
 
-These a temporary, cloud-based computers you use in your browser. You still need to push up your code to save it.
+This is a temporary, cloud-based computer you use in your browser. You still need to push up your code to the repository save it.
 
-1. Make sure you're on your version of today's repository. You should see your name on at the top of the page (NOT `jkeefe`).
+1. Make sure you're on _your_ version of today's repository. You should see your name on at the top of the page (NOT `jkeefe`).
 1. Now click the green "<> Code" button and, after you do, the "Codespaces" tab under it.
 1. Click "Create Codespace on Main"
 1. Wait a minute.
@@ -68,17 +70,18 @@ These a temporary, cloud-based computers you use in your browser. You still need
 ### Let's take a look around!
 
 - If you use VS Code, this will look familiar
-- File list on the left side
 - Editing happens in the big window
 - There's a terminal window at the bottom to run things
-- Let's go through the files and folders
+- Let's go through the files and folders (skip the Makefile for now)
 
 ### Weather Warnings Code
 
 - Look at the Makefile in that folder
 - Open the Terminal, if it's not open already
-- Type `make download`
-- When John says so, type `make warnings`
+- Type `make download` ... this downloads everything
+- Type `make warnings`
+- `make clean` clears out what we downloaded so it's fresh
+- `make all` does three things: `make clean`, `make download` and `make warnings`
 
 I've already set up Slack to receive my messages. Watch:
 
@@ -90,8 +93,6 @@ Imagine if we could run this command every few minutes. That'd be pretty useful!
 
 ## Making a Warnings Bot
 
-It'd be great to get notified when there are new warnings! One way to pull that off is to send new warnings to Slack. Here's how to do that ...
-
 ### Understanding the Github Action
 
 Github actions allow you to run your code in the cloud.
@@ -100,11 +101,11 @@ The driver of any github action is a yaml file in the `.github/workflows` direct
 
 In short, here's what our `warnings` Github Action does:
 
-- It starts running according to a cron statement ([here every 10 minutes(https://github.com/jkeefe/nicar2024-weather/blob/39ae476058f19021be90a70dbc59b60cef120fd5/.github/workflows/warnings.yml#L5C1-L5C103)])
+- It starts running according to a cron statement (here every 10 minutes)
 - Spins up a **computer running ubuntu**
 - **Checks out** this repo
 - **Loads node.js** and installs packages (or it pulls them from a cache if nothing has changed).
-- **Reads** a SLACK_TOKEN secret
+- Reads a secret called SLACK_TOKEN
 - Runs **make all** just like we did in the terminal
 - **Commits** the new data to the repo (saving our `seen.json` for the next run)
 

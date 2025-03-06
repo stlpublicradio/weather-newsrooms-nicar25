@@ -37,16 +37,12 @@ jobs:
           cd ./"$GITHUB_WORKFLOW"
           npm ci
 
-      # - name: Set up Python 3.10
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.10'
-
       - name: Start the data processing using make
         env:
           BOT_NAME: ${{ github.workflow }} # <-- This makes you bot name available to scripts
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
-          # MY_API_KEY: ${{ secrets.MY_API_KEY }}      # <-- Can make available additional repository secrets here
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+
         uses: nick-fields/retry@v2
         with:
           max_attempts: 5
