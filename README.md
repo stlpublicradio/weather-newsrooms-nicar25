@@ -24,12 +24,6 @@ In the process, you will ...
 - Set up Github with the settings you need
 - Make it go!
 
-### Quick demo of the bot
-
-- Pencils down
-- Using my code and my personal Slack account
-- Run the action
-
 ### The slides: A visual guide for where everthing lives
 
 [Slides are here](./slides.pdf).
