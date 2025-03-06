@@ -34,6 +34,8 @@ const saveFile = async (dir, filename, data) => {
   return true;
 };
 
+// If the warning includes geospatial data, we can turn it into a map
+// on geojson.io. This makes a URL that will display that map.
 const makeMapURL = (warning) => {
   // skip if no geometry
   if (!warning.geometry) return null;
@@ -51,11 +53,13 @@ const makeMapURL = (warning) => {
   return url;
 };
 
+// Slack doesn't like long messages; this function will truncate the warning text if it's too long
 const truncator = (text) => {
   if (text.length < 200) return text;
   return text.substring(0, 200) + "... [truncated]";
 };
 
+// This function builds the Slack message
 const buildSlackMessage = (warning) => {
   warning.slack = {
     lines: [],
@@ -93,6 +97,7 @@ const buildSlackMessage = (warning) => {
   return warning;
 };
 
+// This sends the slack messages
 const sendSlack = async (warning) => {
   if (!warning.slack.blocks) {
     console.log("No blocks to send to slack.");
@@ -165,7 +170,7 @@ const sendSlack = async (warning) => {
 // primary function
 
 const main = async () => {
-  // read seen file
+  // read "seen" file of warning IDs we've seen before
   const seen = await loadFile("./data/seen.json");
   const current_warnings = await loadFile("./tmp/download.json");
 

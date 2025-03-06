@@ -60,7 +60,9 @@ const main = async () => {
   for (let i = 0; i < current_warnings.features.length; i++) {
     const warning = current_warnings.features[i];
 
-    // // skip if this warning is not new
+    ///// Uncomment the code in this "for" loop to skip warnings we've already seen.
+    ///// For demonstration purposes, we're not using that code in warnings.js
+
     // let matches = seen.indexOf(warning.properties.id)
     // if (matches > -1) {
 
@@ -70,7 +72,7 @@ const main = async () => {
 
     // }
 
-    console.log(`\n-+-+-+- NEW WARNING! -+-+-+-\n`);
+    console.log(`\n-+-+-+- WARNING! -+-+-+-\n`);
     console.log(`${warning.properties.event}`);
     console.log(`${warning.properties.headline}`);
     console.log(`Locations/counties included: ${warning.properties.areaDesc}`);

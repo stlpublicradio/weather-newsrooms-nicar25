@@ -12,7 +12,7 @@ Join me ...
 
 ### Today's Plan
 
-We'll make a bot that watches for warnings and Slacks them to you
+We'll make a bot that watches for warnings and Slacks them to you.
 
 In the process, you will ...
 
@@ -28,11 +28,9 @@ In the process, you will ...
 
 - Using my Slack account
 
-### A visual guide for where everthing lives
+### The slides: A visual guide for where everthing lives
 
-- Here's my code
-- Go to Actions
-- Weather Service API <> Github actions > Slack
+[Slides are here](./slides.pdf).
 
 ### The Weather Service API
 
