@@ -234,6 +234,14 @@ Then ... run your action:
 - It'll take a few seconds to start.
 - Click the "warnings" label next to the yellow dot to watch it work.
 
+You should see something like this appear in the **#alerts** channel in your **Slack workspace tab**:
+
+<img width="706" alt="Screenshot 2024-09-19 at 1 30 51 PM" src="https://github.com/user-attachments/assets/3b2d6fbc-bdc9-4867-8092-01c950e9687d">
+
+If you click on the "reply" link, you'll see that the bot has included the details as a thread!
+
+<img width="578" alt="Screenshot 2024-09-19 at 1 31 02 PM" src="https://github.com/user-attachments/assets/7548734f-5d8b-4308-b748-ba536c4555ea">
+
 Did the message appear in your Slack workspace? Did the bot throw an error?
 
 If things aren't working, raise your hand. Also you can explore the "Troubleshooting" section below.
@@ -263,9 +271,11 @@ In the terminal window (at the bottom of the screen) ...
 - type `git commit "enabled automatic actions"` or whatever note makes sense to you for this save
 - type `git push origin main` to push up the code, saving it.
 
+If things are working, you could download the Slack app onto your phone, adjust the notification settings, and you're good to go!
+
 ## Troubleshooting
 
-### Try in your Codespace
+### Try from your Codespace instead of the Action
 
 Go back to your Codespace. You may need to restart it (reload the page and click the restart button).
 
@@ -295,17 +305,9 @@ For example:
 export SLACK_CHANNEL=C123ABC45 (no spaces)
 ```
 
-- Now type `make all`!
+- Now type `make all`
 
-You should see something like this appear in the #alerts channel of your Slack workspace:
-
-<img width="706" alt="Screenshot 2024-09-19 at 1 30 51 PM" src="https://github.com/user-attachments/assets/3b2d6fbc-bdc9-4867-8092-01c950e9687d">
-
-If you click on the "reply" link, you'll see that the bot has included the details as a thread!
-
-<img width="578" alt="Screenshot 2024-09-19 at 1 31 02 PM" src="https://github.com/user-attachments/assets/7548734f-5d8b-4308-b748-ba536c4555ea">
-
-## To make the codespace "forget" alerts it's seen:
+## To make the codespace "forget" alerts it's seen
 
 Go into the `data` folder and click on `seen.json`
 
